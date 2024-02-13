@@ -74,11 +74,5 @@ jobs:
           name: nodejsdpn
           path: app/
 
-      - name: checkin the files
-        run: |
-          'ls -lrta'
-          'cd app'
-          'ls -lrta'
-
       - name: Deploy using sls
         run: "npx sls deploy"

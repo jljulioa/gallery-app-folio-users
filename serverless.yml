@@ -51,19 +51,19 @@ functions:
           rules:
             - prefix: uploads/
 
-  # deleteThumbnail:
-  #   handler: DELETE/deleteThumbnail.deleteThumbnail
-  #   layers:
-  #     - !Ref BaseLambdaLayer
-  #   package:
-  #     artifact: 'DELETE/deleteThumbnail.mjs'
-  #   events:
-  #     - s3:
-  #         bucket: gallery-app-porfolio
-  #         event: s3:ObjectRemoved:*
-  #         existing: true
-  #         rules:
-  #           - prefix: uploads/
+  deleteThumbnail:
+    handler: DELETE/deleteThumbnail.deleteThumbnail
+    layers:
+      - !Ref BaseLambdaLayer
+    package:
+      artifact: 'DELETE/deleteThumbnail.mjs'
+    events:
+      - s3:
+          bucket: gallery-app-porfolio
+          event: s3:ObjectRemoved:*
+          existing: true
+          rules:
+            - prefix: uploads/
 
   uploadWallpaper:
     handler: GET/uploadWallpaper.uploadWallpaper
