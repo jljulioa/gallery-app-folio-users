@@ -3,11 +3,10 @@ name: LambdaDeploy
 on:
   push:
     branches:
-      - main
+      - master
 
 env:
   AWS_REGION: us-east-1
-
 
 # permission can be added at job level or workflow level
 permissions:
@@ -19,9 +18,8 @@ jobs:
     runs-on: ubuntu-latest
     name: build_layer
     container:
-        image: node:20
-    steps:     
-
+      image: node:20
+    steps:
       - name: Git clone the repository
         uses: actions/checkout@v4
 
@@ -34,9 +32,9 @@ jobs:
 
       - name: Setup Node.js and install production dependencies
         run: |
-            npm install --production
-            mkdir nodejs
-            mv node_modules nodejs
+          npm install --production
+          mkdir nodejs
+          mv node_modules nodejs
 
       - name: Install zip utility
         run: apt update -y && apt install zip -y
@@ -46,32 +44,31 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
-            name: nodejsdpn
-            path: nodejs.zip
+          name: nodejsdpn
+          path: nodejs.zip
 
   deploy-env:
     name: Deploy Lambda
     runs-on: ubuntu-latest
     needs: build_layer
     steps:
-        - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-        - name: NPM - Load cached venv
-          id: cached-npm-dependencies
-          uses: actions/cache@v3
-          with:
-            path: node_modules
-            key: npm-${{ runner.os }}-${{ hashFiles('**/package.json') }}
+      - name: NPM - Load cached venv
+        id: cached-npm-dependencies
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: npm-${{ runner.os }}-${{ hashFiles('**/package.json') }}
 
-        - name: NPM - Install dependencies
-          if: steps.cached-npm-dependencies.outputs.cache-hit != 'true'
-          run: 'npm install'
+      - name: NPM - Install dependencies
+        if: steps.cached-npm-dependencies.outputs.cache-hit != 'true'
+        run: "npm install"
 
-        - uses: actions/download-artifact@v3
-          with:
-            name: nodejsdpn
-            path: app/
+      - uses: actions/download-artifact@v3
+        with:
+          name: nodejsdpn
+          path: app/
 
-        - name: Deploy using sls
-          run: 'npx sls deploy'
-
+      - name: Deploy using sls
+        run: "npx sls deploy"
