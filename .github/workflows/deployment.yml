@@ -1,0 +1,77 @@
+name: LambdaDeploy
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  AWS_REGION: us-east-1
+
+
+# permission can be added at job level or workflow level
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
+
+jobs:
+  build_layer:
+    runs-on: ubuntu-latest
+    name: build_layer
+    container:
+        image: node:20
+    steps:     
+
+      - name: Git clone the repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::125137910162:role/GitHubAction-ECR_RoleWithAction
+          role-session-name: ecrrolesessiontemp
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Node.js and install production dependencies
+        run: |
+            npm install --production
+            mkdir nodejs
+            mv node_modules nodejs
+
+      - name: Install zip utility
+        run: apt update -y && apt install zip -y
+
+      - name: Create layer zip
+        run: zip -r nodejs.zip nodejs/
+
+      - uses: actions/upload-artifact@v3
+        with:
+            name: nodejsdpn
+            path: nodejs.zip
+
+  deploy-env:
+    name: Deploy Lambda
+    runs-on: ubuntu-latest
+    needs: build_layer
+    steps:
+        - uses: actions/checkout@v3
+
+        - name: NPM - Load cached venv
+          id: cached-npm-dependencies
+          uses: actions/cache@v3
+          with:
+            path: node_modules
+            key: npm-${{ runner.os }}-${{ hashFiles('**/package.json') }}
+
+        - name: NPM - Install dependencies
+          if: steps.cached-npm-dependencies.outputs.cache-hit != 'true'
+          run: 'npm install'
+
+        - uses: actions/download-artifact@v3
+          with:
+            name: nodejsdpn
+            path: app/
+
+        - name: Deploy using sls
+          run: 'npx sls deploy'
+

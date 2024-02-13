@@ -18,9 +18,20 @@ provider:
 plugins:
   - serverless-dotenv-plugin
 
+package:
+  individually: true
+  patterns:
+    - '!*/**'
+    - '!*'
+    - '!node_modules/*'
+
 functions:
   getURLs:
     handler: GET/getURLs.getURLs
+    layers:
+      - !Ref BaseLambdaLayer
+    package:
+      artifact: 'GET/getURLs.mjs'
     events:
       - httpApi:
           path: /urls
@@ -28,6 +39,10 @@ functions:
 
   getThumbnail:
     handler: GET/getThumbnail.getThumbnail
+    layers:
+      - !Ref BaseLambdaLayer
+    package:
+      artifact: 'GET/getThumbnail.mjs'
     events:
       - s3:
           bucket: gallery-app-porfolio
@@ -38,6 +53,10 @@ functions:
 
   deleteThumbnail:
     handler: DELETE/deleteThumbnail.deleteThumbnail
+    layers:
+      - !Ref BaseLambdaLayer
+    package:
+      artifact: 'DELETE/deleteThumbnail.mjs'
     events:
       - s3:
           bucket: gallery-app-porfolio
@@ -48,6 +67,10 @@ functions:
 
   uploadWallpaper:
     handler: GET/uploadWallpaper.uploadWallpaper
+    layers:
+      - !Ref BaseLambdaLayer
+    package:
+      artifact: 'GET/uploadWallpaper.mjs'
     events:
       - http:
           path: /upload
@@ -68,9 +91,17 @@ functions:
               querystrings:
                 filename: true
 
+layers:
+  Base:
+    name: 'gallery-app-layer'
+    compatibleRuntimes:
+      - 'nodejs20.x'
+    package:
+      artifact: app/nodejs.zip
+
 resources:
   Resources:
-    galleryTable:
+    galleryUserTable:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: galleryUserTable
