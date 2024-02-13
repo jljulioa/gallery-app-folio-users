@@ -1,0 +1,15 @@
+{
+  "type": "module",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.509.0",
+    "@aws-sdk/client-s3": "^3.507.0",
+    "@aws-sdk/cloudfront-signer": "^3.496.0",
+    "@aws-sdk/s3-request-presigner": "^3.509.0",
+    "aws-sdk": "^2.1550.0",
+    "sharp": "^0.32.6",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "serverless-dotenv-plugin": "^6.0.0"
+  }
+}

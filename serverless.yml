@@ -1,0 +1,89 @@
+service: gallery-app-folio-users
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:*
+        - s3:*
+        - cloudfront:*
+      Resource: "*"
+  httpApi:
+    cors: true
+
+plugins:
+  - serverless-dotenv-plugin
+
+functions:
+  getURLs:
+    handler: GET/getURLs.getURLs
+    events:
+      - httpApi:
+          path: /urls
+          method: GET
+
+  getThumbnail:
+    handler: GET/getThumbnail.getThumbnail
+    events:
+      - s3:
+          bucket: gallery-app-porfolio
+          event: s3:ObjectCreated:*
+          existing: true
+          rules:
+            - prefix: uploads/
+
+  deleteThumbnail:
+    handler: DELETE/deleteThumbnail.deleteThumbnail
+    events:
+      - s3:
+          bucket: gallery-app-porfolio
+          event: s3:ObjectRemoved:*
+          existing: true
+          rules:
+            - prefix: uploads/
+
+  uploadWallpaper:
+    handler: GET/uploadWallpaper.uploadWallpaper
+    events:
+      - http:
+          path: /upload
+          method: GET
+          cors:
+            origin: "*"
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+              - Access-Control-Allow-Origin
+            allowCredentials: true
+          request:
+            parameters:
+              querystrings:
+                filename: true
+
+resources:
+  Resources:
+    galleryTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: galleryUserTable
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: key
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+          - AttributeName: key
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
