@@ -50,8 +50,8 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::125137910162:role/GitHubAction-ECR_RoleWithAction
-          role-session-name: ecrrolesessiontemp
+          role-to-assume: arn:aws:iam::125137910162:role/lambda-serverless-role
+          role-session-name: serverless-temp
           aws-region: ${{ env.AWS_REGION }}
 
       - name: NPM - Load cached venv
