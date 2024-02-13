@@ -35,7 +35,7 @@ jobs:
       - name: Create layer zip
         run: zip -r nodejs.zip nodejs/
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: nodejsdpn
           path: nodejs.zip
@@ -65,7 +65,7 @@ jobs:
         if: steps.cached-npm-dependencies.outputs.cache-hit != 'true'
         run: "npm install"
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: nodejsdpn
           path: app/
