@@ -75,6 +75,10 @@ functions:
     package: 
       patterns:
         - "DELETE/deleteWallpaper.mjs"
+    events:
+      - httpApi:
+          path: delete/
+          method: DELETE
     
 
   uploadWallpaper:
