@@ -13,18 +13,7 @@ provider:
         - cloudfront:*
       Resource: "*"
   httpApi:
-    cors:
-      origin: "*"
-      headers:
-        - Content-Type
-        - X-Amz-Date
-        - Authorization
-        - X-Api-Key
-        - X-Amz-Security-Token
-        - X-Amz-User-Agent
-        - Access-Control-Allow-Origin
-      allowCredentials: true
-
+    cors: true
 
 plugins:
   - serverless-dotenv-plugin
@@ -90,10 +79,7 @@ functions:
       - httpApi:
           path: /deleteWall
           method: DELETE
-          request:
-            parameters:
-              querystrings:
-                filename: true
+          cors: true
     
 
   uploadWallpaper:
