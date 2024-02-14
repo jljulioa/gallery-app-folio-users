@@ -23,6 +23,12 @@ export const deleteWallpaper = async (event, context) => {
 
     return {
       statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "DELETE, OPTIONS",
+        "Access-Control-Allow-Headers":
+          "Content-Type, Authorization, x-amz-meta-alt-ename", // Include other headers if needed
+      },
       body: JSON.stringify(`{The key file ${deleteKey} was deleted}`, response),
     };
   } catch (error) {
