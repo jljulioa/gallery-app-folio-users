@@ -7,15 +7,6 @@ export const deleteWallpaper = async (event, context) => {
     // Retrieve the image key from the S3 event
     const srckey = event.queryStringParameters.filename;
 
-    if (!namefile) {
-        return {
-          statusCode: 400,
-          body: JSON.stringify({
-            error: "Missing required field: namefile"
-          })
-        };
-      }
-
     console.log(srckey);
 
     const deleteKey = `uploads/${srckey}`;

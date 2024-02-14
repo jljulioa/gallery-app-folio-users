@@ -76,9 +76,24 @@ functions:
       patterns:
         - "DELETE/deleteWallpaper.mjs"
     events:
-      - httpApi:
+      - http:
           path: /deleteWall
           method: DELETE
+          cors:
+            origin: "*"
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+              - Access-Control-Allow-Origin
+            allowCredentials: true
+          request:
+            parameters:
+              querystrings:
+                filename: true
     
 
   uploadWallpaper:
