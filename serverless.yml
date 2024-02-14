@@ -79,8 +79,6 @@ functions:
       - httpApi:
           path: /deleteWall
           method: DELETE
-          cors: true
-    
 
   uploadWallpaper:
     handler: GET/uploadWallpaper.uploadWallpaper
