@@ -31,7 +31,8 @@ functions:
     layers:
       - !Ref BaseLambdaLayer
     package:
-      patterns: 'GET/getURLs.mjs'
+      patterns: 
+      - 'GET/getURLs.mjs'
     events:
       - httpApi:
           path: /urls
@@ -42,7 +43,8 @@ functions:
     layers:
       - !Ref BaseLambdaLayer
     package:
-      patterns: 'GET/getThumbnail.mjs'
+      patterns: 
+      - 'GET/getThumbnail.mjs'
     events:
       - s3:
           bucket: gallery-app-porfolio
@@ -56,7 +58,8 @@ functions:
     layers:
       - !Ref BaseLambdaLayer
     package:
-      patterns: 'DELETE/deleteThumbnail.mjs'
+      patterns: 
+        - 'DELETE/deleteThumbnail.mjs'
     events:
       - s3:
           bucket: gallery-app-porfolio
@@ -65,12 +68,22 @@ functions:
           rules:
             - prefix: uploads/
 
+  deleteWallpapers:
+    handler: DELETE/deleteWallpaper.deleteWallpaper
+    layers:
+      - !Ref BaseLambdaLayer
+    package: 
+      patterns:
+        - "DELETE/deleteWallpaper.mjs"
+    
+
   uploadWallpaper:
     handler: GET/uploadWallpaper.uploadWallpaper
     layers:
       - !Ref BaseLambdaLayer
     package:
-      patterns: 'GET/uploadWallpaper.mjs'
+      patterns: 
+      - 'GET/uploadWallpaper.mjs'
     events:
       - http:
           path: /upload
