@@ -62,6 +62,9 @@ export const getURLs = async (event) => {
 
     return {
       statusCode: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({ urls, urlsOri, objectKeys }),
     };
   } catch (error) {
