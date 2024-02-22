@@ -5,6 +5,12 @@ provider:
   name: aws
   runtime: nodejs20.x
   region: us-east-1
+  environment:
+      CFD_KEY: ${ssm:/CFD_KEY}
+      DB_TABLE: ${ssm:/DB_TABLE}
+      CFD_DOMAIN: ${ssm:/CFD_DOMAIN}
+      CFD_KEY_ID: ${ssm:/CFD_KEY_ID}
+      BUCKET_NAME: ${ssm:/BUCKET_NAME}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -80,12 +86,6 @@ functions:
 
   uploadWallpaper:
     handler: GET/uploadWallpaper.uploadWallpaper
-    environment:
-      CFD_KEY: ${ssm:/CFD_KEY}
-      DB_TABLE: ${ssm:/DB_TABLE}
-      CFD_DOMAIN: ${ssm:/CFD_DOMAIN}
-      CFD_KEY_ID: ${ssm:/CFD_KEY_ID}
-      BUCKET_NAME: ${ssm:/BUCKET_NAME}
     layers:
       - !Ref BaseLambdaLayer
     package:
