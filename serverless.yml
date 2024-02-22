@@ -5,6 +5,12 @@ provider:
   name: aws
   runtime: nodejs20.x
   region: us-east-1
+  environment:
+    CFD_KEY: ${ssm:/CFD_KEY~true}
+    DB_TABLE: ${ssm:/DB_TABLE~true}
+    CFD_DOMAIN: ${ssm:/CFD_DOMAIN~true}
+    CFD_KEY_ID: ${ssm:/CFD_KEY_ID~true}
+    BUCKET_NAME: ${ssm:/BUCKET_NAME~true}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -15,15 +21,12 @@ provider:
   httpApi:
     cors: true
 
-plugins:
-  - serverless-dotenv-plugin
-
 package:
   individually: true
   patterns:
-    - '!*/**'
-    - '!*'
-    - '!node_modules/*'
+    - "!*/**"
+    - "!*"
+    - "!node_modules/*"
 
 functions:
   getURLs:
@@ -31,8 +34,8 @@ functions:
     layers:
       - !Ref BaseLambdaLayer
     package:
-      patterns: 
-      - 'GET/getURLs.mjs'
+      patterns:
+        - "GET/getURLs.mjs"
     events:
       - httpApi:
           path: /urls
@@ -43,8 +46,8 @@ functions:
     layers:
       - !Ref BaseLambdaLayer
     package:
-      patterns: 
-      - 'GET/getThumbnail.mjs'
+      patterns:
+        - "GET/getThumbnail.mjs"
     events:
       - s3:
           bucket: gallery-app-porfolio
@@ -58,8 +61,8 @@ functions:
     layers:
       - !Ref BaseLambdaLayer
     package:
-      patterns: 
-        - 'DELETE/deleteThumbnail.mjs'
+      patterns:
+        - "DELETE/deleteThumbnail.mjs"
     events:
       - s3:
           bucket: gallery-app-porfolio
@@ -72,7 +75,7 @@ functions:
     handler: DELETE/deleteWallpaper.deleteWallpaper
     layers:
       - !Ref BaseLambdaLayer
-    package: 
+    package:
       patterns:
         - "DELETE/deleteWallpaper.mjs"
     events:
@@ -85,8 +88,8 @@ functions:
     layers:
       - !Ref BaseLambdaLayer
     package:
-      patterns: 
-      - 'GET/uploadWallpaper.mjs'
+      patterns:
+        - "GET/uploadWallpaper.mjs"
     events:
       - http:
           path: /upload
@@ -109,9 +112,9 @@ functions:
 
 layers:
   Base:
-    name: 'gallery-app-layer'
+    name: "gallery-app-layer"
     compatibleRuntimes:
-      - 'nodejs20.x'
+      - "nodejs20.x"
     package:
       artifact: app/nodejs.zip
 
