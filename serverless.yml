@@ -5,12 +5,6 @@ provider:
   name: aws
   runtime: nodejs20.x
   region: us-east-1
-  environment:
-    CFD_KEY: ${ssm:us-east-1:125137910162:parameter/CFD_KEY~true}
-    DB_TABLE: ${ssm:us-east-1:125137910162:parameter/DB_TABLE~true}
-    CFD_DOMAIN: ${ssm:us-east-1:125137910162:parameter/CFD_DOMAIN~true}
-    CFD_KEY_ID: ${ssm:us-east-1:125137910162:parameter/CFD_KEY_ID~true}
-    BUCKET_NAME: ${ssm:us-east-1:125137910162:parameter/BUCKET_NAME~true}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -31,6 +25,12 @@ package:
 functions:
   getURLs:
     handler: GET/getURLs.getURLs
+    environment:
+      CFD_KEY: ${ssm:/CFD_KEY~true}
+      DB_TABLE: ${ssm:/DB_TABLE~true}
+      CFD_DOMAIN: ${ssm:/CFD_DOMAIN~true}
+      CFD_KEY_ID: ${ssm:/CFD_KEY_ID~true}
+      BUCKET_NAME: ${ssm:/BUCKET_NAME~true}
     layers:
       - !Ref BaseLambdaLayer
     package:
@@ -43,6 +43,12 @@ functions:
 
   getThumbnail:
     handler: GET/getThumbnail.getThumbnail
+    environment:
+      CFD_KEY: ${ssm:/CFD_KEY~true}
+      DB_TABLE: ${ssm:/DB_TABLE~true}
+      CFD_DOMAIN: ${ssm:/CFD_DOMAIN~true}
+      CFD_KEY_ID: ${ssm:/CFD_KEY_ID~true}
+      BUCKET_NAME: ${ssm:/BUCKET_NAME~true}
     layers:
       - !Ref BaseLambdaLayer
     package:
@@ -58,6 +64,12 @@ functions:
 
   deleteThumbnail:
     handler: DELETE/deleteThumbnail.deleteThumbnail
+    environment:
+      CFD_KEY: ${ssm:/CFD_KEY~true}
+      DB_TABLE: ${ssm:/DB_TABLE~true}
+      CFD_DOMAIN: ${ssm:/CFD_DOMAIN~true}
+      CFD_KEY_ID: ${ssm:/CFD_KEY_ID~true}
+      BUCKET_NAME: ${ssm:/BUCKET_NAME~true}
     layers:
       - !Ref BaseLambdaLayer
     package:
@@ -73,6 +85,12 @@ functions:
 
   deleteWallpapers:
     handler: DELETE/deleteWallpaper.deleteWallpaper
+    environment:
+      CFD_KEY: ${ssm:/CFD_KEY~true}
+      DB_TABLE: ${ssm:/DB_TABLE~true}
+      CFD_DOMAIN: ${ssm:/CFD_DOMAIN~true}
+      CFD_KEY_ID: ${ssm:/CFD_KEY_ID~true}
+      BUCKET_NAME: ${ssm:/BUCKET_NAME~true}
     layers:
       - !Ref BaseLambdaLayer
     package:
@@ -85,6 +103,12 @@ functions:
 
   uploadWallpaper:
     handler: GET/uploadWallpaper.uploadWallpaper
+    environment:
+      CFD_KEY: ${ssm:/CFD_KEY~true}
+      DB_TABLE: ${ssm:/DB_TABLE~true}
+      CFD_DOMAIN: ${ssm:/CFD_DOMAIN~true}
+      CFD_KEY_ID: ${ssm:/CFD_KEY_ID~true}
+      BUCKET_NAME: ${ssm:/BUCKET_NAME~true}
     layers:
       - !Ref BaseLambdaLayer
     package:
