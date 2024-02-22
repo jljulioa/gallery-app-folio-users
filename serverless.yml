@@ -6,11 +6,11 @@ provider:
   runtime: nodejs20.x
   region: us-east-1
   environment:
-    CFD_KEY: ${ssm:/CFD_KEY~true}
-    DB_TABLE: ${ssm:/DB_TABLE~true}
-    CFD_DOMAIN: ${ssm:/CFD_DOMAIN~true}
-    CFD_KEY_ID: ${ssm:/CFD_KEY_ID~true}
-    BUCKET_NAME: ${ssm:/BUCKET_NAME~true}
+    CFD_KEY: ${/CFD_KEY~true}
+    DB_TABLE: ${/DB_TABLE~true}
+    CFD_DOMAIN: ${/CFD_DOMAIN~true}
+    CFD_KEY_ID: ${/CFD_KEY_ID~true}
+    BUCKET_NAME: ${/BUCKET_NAME~true}
   iamRoleStatements:
     - Effect: Allow
       Action:
