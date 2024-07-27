@@ -12,7 +12,7 @@ export const getURLs = async (event) => {
   const currentDate = new Date();
   const expirationDate = new Date(currentDate.getTime() + TWO_DAYS_IN_MS);
 
-  const dateLessThan = "2024-04-04";
+  const dateLessThan = "2024-12-04";
 
   try {
     const dynamoParams = {
